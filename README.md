@@ -253,9 +253,7 @@ Building p4d:
 cd /usr/src/
 rm -r linux-p4d/
 git clone https://github.com/horchi/linux-p4d/
-cd linux-p4d/
-make clean all
-make install DESTDIR=/usr/src/docker-p4d/docker-linux-p4d/root/ PREFIX=/usr
+cd /usr/src/linux-p4d/ && make clean all && make install DESTDIR=/usr/src/docker-p4d/docker-linux-p4d/root/ PREFIX=/usr
 ```
 Build Base image in docker-linux-p4d-base Directory:
 ```
@@ -269,6 +267,6 @@ Deploy to Dockerhub
 
 ```
 docker login
-docker tag linux_p4d helmutkalsberger/linux_p4d:0.10.3
-docker push helmutkalsberger/linux_p4d:0.10.3
+docker tag docker-p4d helmutkalsberger/docker-p4d:0.10.3-RC2
+docker push helmutkalsberger/docker-p4d:0.10.3-RC2
 ```
