@@ -6,6 +6,7 @@ This daemon is fetching data from the S 3200 and store it in a MySQL database.
 Written by: *Jörg Wendel (linux at jwendel dot de)*
 
 Original Repo: https://github.com/horchi/linux-p4d
+Original Repo: https://github.com/N3m3515/docker-p4d
 
 ## License
 This code is distributed under the terms and conditions of the GNU GENERAL PUBLIC LICENSE. See the file LICENSE for details.
@@ -41,7 +42,7 @@ If this project help you, you can give me a cup of coffee :)
 - A Linux based operating system is required
 
 For a ready Build Image visit:
-https://hub.docker.com/r/n3m3515/docker-p4d
+https://hub.docker.com/r/helmutkalsberger/docker-p4d
 
 ## Usage
 
@@ -75,7 +76,7 @@ Save and edit the the below configuration as docker-compose.yml and run `docker-
 
 services:
   p4d:
-    image: n3m3515/docker-p4d:latest
+    image: helmutkalsberger/docker-p4d:latest
     container_name: docker-p4d
     privileged: true
     environment:
@@ -133,7 +134,7 @@ Save and edit the the below configuration as docker-compose.yml and run `docker-
 ```yaml
 services:
   p4d:
-    image: n3m3515/docker-p4d:latest
+    image: helmutkalsberger/docker-p4d:latest
     container_name: linux_p4d
     privileged: true
     environment:
@@ -216,13 +217,12 @@ A subset of available linux-p4d configuration settings in daemon.conf and msmtpr
 | **W1MQTT** 📂    |       tcp://localhost:1883         |        ✅        | URL to MQTT Broker for 1Wire Sensors (eg. tcp://localhost:1883)                                   |
 
 # Build Process
-Setting up the Build Enviroment:
+## Setting up the Build Enviroment:
 Install Dependencies:
 ```
 apt-get update
 apt-get upgrade
-apt-get install 
-git build-essential pkg-config libssl-dev libjansson-dev libxml2-dev libcurl4-openssl-dev libssl-dev libmariadbclient-dev libmariadb-dev-compat uuid-dev cmake python3-dev wiringpi
+apt install git build-essential pkg-config libssl-dev libjansson-dev libcurl4-openssl-dev libmariadb-dev uuid-dev libcap-dev liblua5.3-dev cmake
 ```
 Building libwebsockets:
 ```
@@ -245,8 +245,9 @@ Setting up the Docker build enviroment:
 ```
 cd /usr/src/
 rm -r docker-p4d
-git clone https://github.com/N3m3515/docker-p4d/ docker-p4d
+git clone https://github.com/helmut8960/docker-p4d/ docker-p4d
 ```
+## Run the Build    
 Building p4d:
 ```
 cd /usr/src/
@@ -258,11 +259,16 @@ make install DESTDIR=/usr/src/docker-p4d/docker-linux-p4d/root/ PREFIX=/usr
 ```
 Build Base image in docker-linux-p4d-base Directory:
 ```
-cd /usr/src/docker-p4d/docker-linux-p4d-base/
-sudo docker build -t "linux_p4d-base" .
+cd /usr/src/docker-p4d/docker-linux-p4d-base/ && docker build -t "docker_p4d-base" .
 ```
 After that Build Final Image in docker-linux-p4d Directory:
 ```
-cd /usr/src/docker-p4d/docker-linux-p4d/
-sudo docker build -t "linux_p4d" .
+cd /usr/src/docker-p4d/docker-linux-p4d/ && docker build -t "docker-p4d" .
+```
+Deploy to Dockerhub
+
+```
+docker login
+docker tag linux_p4d helmutkalsberger/linux_p4d:0.10.3
+docker push helmutkalsberger/linux_p4d:0.10.3
 ```
